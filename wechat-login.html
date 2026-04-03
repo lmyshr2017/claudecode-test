@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>登录 | Digital Curator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@500;700;800&amp;family=Noto+Sans+SC:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface": "#f1f5f9",
+              "on-tertiary-fixed-variant": "#ffdad5",
+              "tertiary": "#ffb4aa",
+              "on-tertiary-fixed": "#410001",
+              "on-primary": "#ffffff",
+              "inverse-surface": "#e2e8f0",
+              "tertiary-fixed": "#ffdad5",
+              "inverse-on-surface": "#0f172a",
+              "on-secondary-container": "#cbd5e1",
+              "on-background": "#f8fafc",
+              "on-primary-container": "#66ff95",
+              "surface-container-high": "#1e293b",
+              "surface-container-highest": "#334155",
+              "on-secondary-fixed": "#d1e4fb",
+              "secondary-fixed": "#4e6073",
+              "primary-fixed": "#006d33",
+              "on-surface-variant": "#94a3b8",
+              "surface-container": "#1e293b",
+              "primary-container": "#006d33",
+              "tertiary-fixed-dim": "#ffb4aa",
+              "on-tertiary": "#690005",
+              "surface": "#0f172a",
+              "primary-fixed-dim": "#006d33",
+              "secondary-container": "#334155",
+              "on-secondary-fixed-variant": "#cbd5e1",
+              "on-error-container": "#ffdad6",
+              "secondary-fixed-dim": "#b5c8df",
+              "surface-container-low": "#1e293b",
+              "on-primary-fixed-variant": "#66ff95",
+              "surface-dim": "#0f172a",
+              "inverse-primary": "#006d33",
+              "outline": "#475569",
+              "background": "#0f172a",
+              "primary": "#07c160",
+              "error-container": "#93000a",
+              "surface-tint": "#07c160",
+              "surface-container-lowest": "#020617",
+              "surface-variant": "#334155",
+              "tertiary-container": "#93000a",
+              "outline-variant": "#334155",
+              "on-error": "#690005",
+              "secondary": "#94a3b8",
+              "on-tertiary-container": "#ffdad6",
+              "on-primary-fixed": "#ffffff",
+              "on-secondary": "#1e293b",
+              "surface-bright": "#1e293b",
+              "error": "#ffb4ab"
+            },
+            fontFamily: {
+              "headline": ["Manrope", "Noto Sans SC"],
+              "body": ["Inter", "Noto Sans SC"],
+              "label": ["Inter", "Noto Sans SC"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        font-family: 'Inter', 'Noto Sans SC', sans-serif;
+      }
+      .editorial-shadow {
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      }
+      .primary-gradient {
+        background: linear-gradient(135deg, #006d33 0%, #07c160 100%);
+      }
+      .primary-glow {
+        box-shadow: 0 8px 24px rgba(7, 193, 96, 0.3);
+      }
+      .glass-login-card {
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .vignette-overlay {
+        background: radial-gradient(circle at 30% 50%, transparent 0%, rgba(15, 23, 42, 0.8) 100%);
+      }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen selection:bg-primary selection:text-white overflow-hidden">
+<!-- TopAppBar Fragment -->
+<header class="fixed top-0 w-full z-[60] flex justify-between items-center px-12 py-8 max-w-[1920px] mx-auto">
+<div class="text-xl font-bold tracking-tight text-white font-headline">
+            Digital Curator
+        </div>
+<div class="flex items-center space-x-6">
+<a class="text-sm font-medium text-slate-400 hover:text-primary transition-colors" href="#">帮助中心</a>
+<button class="flex items-center space-x-1 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">language</span>
+<span class="text-sm">简体中文</span>
+</button>
+</div>
+</header>
+<main class="relative flex min-h-screen w-full">
+<!-- Background Layer: Full Width to bleed under the form -->
+<section class="absolute inset-0 z-0">
+<img alt="Minimalist Architecture" class="w-full h-full object-cover grayscale-[30%] contrast-[1.1]" data-alt="Abstract architectural photography with clean lines and soft shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADhPhxo-ooWe-E_BtthzVkq4q9g8M2D7Pll_a0EzsnaM95XFGN0rZF749mLg31_IwU55ohcknABilZrR0cqyLJke4WuimtMU6edVEJ9pwNqcn5ns01dj0T65B2vkddtFwUDh8a2x7ZWmGw4bdzLm-KGJM_sWBDQMdRM-ORbE2wEgwSocv3-JEHkvbuGy3js1VlPo4ed7h8rQKQ3LrC4278oAktRagcdPNkQRJq7wXB1tLnd5zrbcPbqSikw0oNhnOtO_cl1ebtCwA"/>
+<!-- Sophisticated Gradient Transition -->
+<div class="absolute inset-0 vignette-overlay"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-surface/20 via-surface/40 to-surface"></div>
+<div class="absolute inset-0 bg-primary/5 mix-blend-multiply"></div>
+</section>
+<!-- Left Side Content: Integrated Text -->
+<section class="relative z-10 hidden lg:flex lg:w-[55%] flex-col justify-end p-24">
+<div class="max-w-xl">
+<p class="text-[3rem] font-headline font-extrabold leading-tight text-white mb-6 tracking-tight drop-shadow-2xl">
+                    Refining Digital <br/>Artistry.
+                </p>
+<p class="text-base text-slate-300 font-light max-w-sm leading-relaxed drop-shadow-lg">
+                    一个为数字时代策展人打造的高端协作平台。平衡美学与效能，连接创意与未来。
+                </p>
+</div>
+</section>
+<!-- Right Side: Login Form with Glassmorphism -->
+<section class="relative z-20 w-full lg:w-[45%] flex flex-col justify-center items-center px-6 sm:px-16">
+<div class="w-full max-w-[460px] glass-login-card p-10 sm:p-14 rounded-[2rem] space-y-10 shadow-2xl">
+<!-- Greeting -->
+<div class="space-y-3">
+<h1 class="text-[2rem] font-headline font-bold text-white tracking-tight">欢迎回来</h1>
+<p class="text-slate-400 font-light tracking-wide">请输入您的账号信息以访问您的工作台</p>
+</div>
+<!-- Main CTA: WeChat One-Click Login -->
+<div class="space-y-4">
+<button class="w-full h-14 primary-gradient primary-glow text-white rounded-full flex items-center justify-center space-x-3 group transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-2xl" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-medium tracking-wide">微信一键登录</span>
+</button>
+<div class="flex items-center py-4">
+<div class="flex-grow h-[1px] bg-white/10"></div>
+<span class="px-4 text-[0.7rem] uppercase tracking-[0.2em] text-slate-500 font-label">或者使用账号登录</span>
+<div class="flex-grow h-[1px] bg-white/10"></div>
+</div>
+</div>
+<!-- Input Fields -->
+<form class="space-y-6">
+<div class="space-y-1 group">
+<label class="block text-[0.7rem] font-label text-slate-500 font-semibold tracking-wider uppercase ml-1" for="account">手机号 / 邮箱</label>
+<input class="w-full px-1 py-3 bg-transparent border-0 border-b border-white/10 focus:border-primary focus:ring-0 transition-colors placeholder:text-slate-700 text-on-surface" id="account" placeholder="example@digitalcurator.com" type="text"/>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between items-end">
+<label class="block text-[0.7rem] font-label text-slate-500 font-semibold tracking-wider uppercase ml-1" for="password">密码</label>
+<a class="text-[0.7rem] text-primary hover:text-white transition-colors font-medium" href="#">忘记密码？</a>
+</div>
+<div class="relative">
+<input class="w-full px-1 py-3 bg-transparent border-0 border-b border-white/10 focus:border-primary focus:ring-0 transition-colors placeholder:text-slate-700 text-on-surface" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors" type="button">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</div>
+</div>
+<button class="w-full h-14 bg-white/10 text-white rounded-full font-semibold tracking-wide hover:bg-white/15 transition-colors active:scale-[0.98] border border-white/5" type="submit">
+                        进入系统
+                    </button>
+</form>
+<!-- Additional Social Logins -->
+<div class="pt-2">
+<div class="flex justify-center space-x-6">
+<button class="p-3 bg-white/5 rounded-full text-slate-400 hover:bg-white/10 hover:text-white transition-all border border-white/5">
+<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-2.21 5.42-7.84 5.42-4.82 0-8.74-4-8.74-8.92s3.92-8.92 8.74-8.92c2.74 0 4.57 1.14 5.62 2.14l2.59-2.5c-1.66-1.55-3.82-2.5-8.21-2.5-6.07 0-11 4.93-11 11s4.93 11 11 11c6.34 0 10.55-4.46 10.55-10.73 0-.72-.08-1.27-.18-1.82h-10.37z"></path></svg>
+</button>
+<button class="p-3 bg-white/5 rounded-full text-slate-400 hover:bg-white/10 hover:text-white transition-all border border-white/5">
+<span class="material-symbols-outlined text-xl">phone_iphone</span>
+</button>
+</div>
+</div>
+<!-- Accessibility Footer -->
+<div class="pt-4">
+<div class="flex items-start space-x-3">
+<div class="pt-0.5">
+<input class="w-3.5 h-3.5 rounded border-slate-700 bg-slate-900 text-primary focus:ring-primary focus:ring-offset-surface" id="terms" type="checkbox"/>
+</div>
+<label class="text-[0.7rem] text-slate-500 leading-relaxed" for="terms">
+                            我已阅读并同意 Digital Curator 的 <a class="text-primary hover:underline" href="#">服务协议</a> 和 <a class="text-primary hover:underline" href="#">隐私政策</a>。
+                        </label>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="fixed bottom-8 w-full flex justify-center items-center px-12 z-[60] pointer-events-none">
+<div class="flex items-center space-x-6 pointer-events-auto">
+<span class="text-slate-600 font-label text-[0.7rem] uppercase tracking-[0.05em]">© 2024 Digital Curator</span>
+<div class="h-1 w-1 bg-slate-700 rounded-full"></div>
+<a class="text-slate-600 font-label text-[0.7rem] uppercase tracking-[0.05em] hover:text-primary transition-colors" href="#">服务协议</a>
+<a class="text-slate-600 font-label text-[0.7rem] uppercase tracking-[0.05em] hover:text-primary transition-colors" href="#">隐私政策</a>
+<a class="text-slate-600 font-label text-[0.7rem] uppercase tracking-[0.05em] hover:text-primary transition-colors" href="#">版权声明</a>
+</div>
+</footer>
+</body></html>
