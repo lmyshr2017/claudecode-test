@@ -1,0 +1,53 @@
+/* Vant CSS variable overrides — must come before component styles */
+:root {
+  --van-primary-color: #D97706;
+  --van-button-primary-background: #D97706;
+  --van-button-primary-border-color: #D97706;
+  --van-tabs-bottom-bar-color: #D97706;
+  --van-tabbar-item-active-color: #D97706;
+  --van-stepper-button-icon-color: #D97706;
+  --van-switch-on-background: #D97706;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #F8F7F4;
+  color: #1C1917;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue',
+    'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Page wrapper — adds bottom padding for the TabBar */
+.page {
+  min-height: 100vh;
+  padding-bottom: 60px;
+  background: #F8F7F4;
+}
+
+/* Card component */
+.card {
+  background: #fff;
+  border: 1px solid #F0EDE8;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 0 16px 12px;
+}
+
+.card-title {
+  font-size: 0.875rem;
+  color: #78716C;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+/* Scrollable page content */
+.scroll-area {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
