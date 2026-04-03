@@ -25,7 +25,7 @@
         :class="{
           'cell-other':    !cell.inCurrentMonth,
           'cell-disabled': !cell.inPeriod,
-          'cell-today':     cell.dateStr === todayStr,
+          'cell-today':     cell.dateStr === todayStr && cell.inPeriod,
           'cell-active':    cell.inPeriod && cell.inCurrentMonth,
         }"
         @click="onCellClick(cell)"

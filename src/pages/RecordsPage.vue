@@ -33,6 +33,7 @@
 
 <script setup>
 import { ref, computed, onMounted }  from 'vue'
+import { showToast }                from 'vant'
 import CalendarView  from '@/components/CalendarView.vue'
 import RecordSheet   from '@/components/RecordSheet.vue'
 import { useRecordsStore }  from '@/stores/records'
@@ -66,7 +67,11 @@ function onSaved() {
 
 onMounted(async () => {
   const { start, end } = settingsStore.currentPeriod
-  await recordsStore.fetchByRange(start, end)
+  try {
+    await recordsStore.fetchByRange(start, end)
+  } catch {
+    showToast({ message: '加载记录失败，请重试', type: 'fail' })
+  }
 })
 </script>
 

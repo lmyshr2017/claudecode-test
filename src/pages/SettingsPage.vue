@@ -107,7 +107,7 @@ import { showToast, showConfirmDialog } from 'vant'
 import { useAuthStore }                from '@/stores/auth'
 import { useSettingsStore }            from '@/stores/settings'
 import { useRecordsStore }     from '@/stores/records'
-import { formatPeriodLabel, getCurrentPeriodRange, formatDate } from '@/utils/dateUtils'
+import { formatPeriodLabel, getCurrentPeriodRange, formatDate, parseLocalDate } from '@/utils/dateUtils'
 
 const router        = useRouter()
 const authStore     = useAuthStore()
@@ -134,7 +134,9 @@ const previewLabel = computed(() => {
 
 const syncLabel = computed(() => {
   if (!settingsStore.lastSyncAt) return '从未'
-  const d = settingsStore.lastSyncAt
+  const d = settingsStore.lastSyncAt instanceof Date
+    ? settingsStore.lastSyncAt
+    : new Date(settingsStore.lastSyncAt)
   return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`
 })
 
@@ -179,7 +181,7 @@ function exportCSV() {
   const weekDays = ['日', '一', '二', '三', '四', '五', '六']
   const header = '日期,星期,上班时间,下班时间,工作时长(h),加班时长(h),备注'
   const rows = allRecords.map(r => {
-    const d = new Date(r.date)
+    const d = parseLocalDate(r.date)
     const weekDay = `周${weekDays[d.getDay()]}`
     const start = r.start_time || ''
     const end   = r.end_time   || ''
@@ -192,7 +194,7 @@ function exportCSV() {
       worked = (mins / 60).toFixed(1)
     }
     const note = (r.note || '').replace(/,/g, '，')
-    return [r.date, weekDay, start, end, worked, r.ot_hours, note].join(',')
+    return [r.date, weekDay, start, end, worked, r.ot_hours != null ? Number(r.ot_hours).toFixed(1) : '', note].join(',')
   })
 
   const csv  = [header, ...rows].join('\n')
@@ -201,7 +203,9 @@ function exportCSV() {
   const a    = document.createElement('a')
   a.href     = url
   a.download = `工时记录_${formatDate(new Date())}.csv`
+  document.body.appendChild(a)
   a.click()
+  document.body.removeChild(a)
   URL.revokeObjectURL(url)
 }
 

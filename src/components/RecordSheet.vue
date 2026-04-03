@@ -131,7 +131,8 @@ watch(
     form.end_time   = rec?.end_time   ?? ''
     form.ot_hours   = rec ? Number(rec.ot_hours) : 0
     form.note       = rec?.note ?? ''
-  }
+  },
+  { immediate: true }
 )
 
 const autoCalcLock = ref(false)
@@ -173,6 +174,7 @@ function openPicker(target) {
 }
 
 function onPickerConfirm({ selectedValues }) {
+  if (!selectedValues?.length) return
   const val = selectedValues.map(String).join(':')
   if (pickerTarget.value === 'start') form.start_time = val
   else                                form.end_time   = val
