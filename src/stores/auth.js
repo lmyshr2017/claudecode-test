@@ -24,8 +24,9 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     try {
       const { user: u } = await signIn(email, password)
+      const p = await fetchProfile(u.id)
       user.value    = u
-      profile.value = await fetchProfile(u.id)
+      profile.value = p
     } finally {
       loading.value = false
     }
@@ -42,9 +43,12 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
-    await signOut()
-    user.value    = null
-    profile.value = null
+    try {
+      await signOut()
+    } finally {
+      user.value    = null
+      profile.value = null
+    }
   }
 
   return { user, profile, loading, init, login, register, logout }

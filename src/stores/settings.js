@@ -50,12 +50,7 @@ export const useSettingsStore = defineStore('settings', () => {
     if (patch.period_start_day !== undefined) periodStartDay.value = patch.period_start_day
     if (patch.period_end_day   !== undefined) periodEndDay.value   = patch.period_end_day
 
-    await upsertSettings({
-      std_hours:        stdHours.value,
-      period_start_day: periodStartDay.value,
-      period_end_day:   periodEndDay.value,
-      ...patch,
-    })
+    await upsertSettings(patch)
     lastSyncAt.value = new Date()
   }
 

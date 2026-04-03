@@ -42,9 +42,14 @@ export async function upsertRecord(record) {
  * @param {string} date - YYYY-MM-DD
  */
 export async function deleteRecord(date) {
+  const { data: authData } = await supabase.auth.getUser()
+  const userId = authData?.user?.id
+  if (!userId) throw new Error('Not authenticated')
+
   const { error } = await supabase
     .from('records')
     .delete()
+    .eq('user_id', userId)
     .eq('date', date)
   if (error) throw error
 }

@@ -56,6 +56,10 @@ export const useRecordsStore = defineStore('records', () => {
     loading.value = true
     try {
       const data = await fetchRecords(start, end)
+      // Remove stale entries for this range before merging
+      for (const key of records.value.keys()) {
+        if (key >= start && key <= end) records.value.delete(key)
+      }
       data.forEach(rec => records.value.set(rec.date, rec))
     } finally {
       loading.value = false
