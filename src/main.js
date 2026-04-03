@@ -1,9 +1,14 @@
-import { createApp }  from 'vue'
+import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import router from './router'
 import App from './App.vue'
 
 // Vant components used across the app
+import 'vant/lib/index.css'
+
+// Global styles (must come AFTER vant CSS to allow overrides)
+import '@/styles/index.css'
+
 import {
   Button, Form, Field, CellGroup, Cell,
   Tab, Tabs, NavBar, Tabbar, TabbarItem,
@@ -11,10 +16,6 @@ import {
   Stepper, Progress, Dialog, Toast,
   Icon, Loading, Empty, Skeleton,
 } from 'vant'
-import 'vant/lib/index.css'
-
-// Global styles (must come AFTER vant CSS to allow overrides)
-import '@/styles/index.css'
 
 const app = createApp(App)
 
