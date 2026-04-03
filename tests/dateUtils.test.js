@@ -7,6 +7,7 @@ import {
   getCalendarDates,
   formatPeriodLabel,
   formatDateLabel,
+  formatShortDate,
 } from '../src/utils/dateUtils'
 
 describe('formatDate', () => {
@@ -96,5 +97,12 @@ describe('formatDateLabel', () => {
   it('formats date as month/day + weekday', () => {
     // 2026-04-03 is a Friday (周五)
     expect(formatDateLabel('2026-04-03')).toBe('4月3日 周五')
+  })
+})
+
+describe('formatShortDate', () => {
+  it('formats date as M月D日', () => {
+    expect(formatShortDate('2026-04-03')).toBe('4月3日')
+    expect(formatShortDate('2026-01-01')).toBe('1月1日')
   })
 })
