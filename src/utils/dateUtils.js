@@ -1,4 +1,14 @@
 /**
+ * Parse "YYYY-MM-DD" string to a local-time Date (avoids UTC midnight parsing).
+ * @param {string} dateStr
+ * @returns {Date}
+ */
+function parseLocalDate(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number)
+  return new Date(y, m - 1, d)
+}
+
+/**
  * Format a Date object to "YYYY-MM-DD" string.
  */
 export function formatDate(date) {
@@ -62,10 +72,9 @@ export function getCurrentPeriodRange(startDay, endDay, today = new Date()) {
  * @param {string} start - YYYY-MM-DD
  * @param {string} end   - YYYY-MM-DD
  */
-export function calcPeriodProgress(start, end) {
-  const s   = new Date(start).getTime()
-  const e   = new Date(end).getTime() + 86400000  // include end day fully
-  const now = Date.now()
+export function calcPeriodProgress(start, end, now = Date.now()) {
+  const s = parseLocalDate(start).getTime()
+  const e = parseLocalDate(end).getTime() + 86400000  // include end day fully
   if (now <= s) return 0
   if (now >= e) return 100
   return Math.round(((now - s) / (e - s)) * 100)
@@ -84,8 +93,8 @@ export function getCalendarDates(year, month, periodStart, periodEnd) {
   const startOffset = firstDay.getDay()               // 0=Sun
   const mondayOff   = (startOffset + 6) % 7           // convert to Monday-first
 
-  const pStart = new Date(periodStart)
-  const pEnd   = new Date(periodEnd)
+  const pStart = parseLocalDate(periodStart)
+  const pEnd   = parseLocalDate(periodEnd)
   pEnd.setHours(23, 59, 59, 999)                      // include end day fully
 
   return Array.from({ length: 42 }, (_, i) => {
@@ -105,8 +114,8 @@ export function getCalendarDates(year, month, periodStart, periodEnd) {
  * @param {string} end   - YYYY-MM-DD
  */
 export function formatPeriodLabel(start, end) {
-  const s = new Date(start)
-  const e = new Date(end)
+  const s = parseLocalDate(start)
+  const e = parseLocalDate(end)
   return `${s.getMonth() + 1}月${s.getDate()}日 — ${e.getMonth() + 1}月${e.getDate()}日`
 }
 
@@ -115,7 +124,7 @@ export function formatPeriodLabel(start, end) {
  */
 export function formatDateLabel(dateStr) {
   const weekDays = ['日', '一', '二', '三', '四', '五', '六']
-  const d = new Date(dateStr)
+  const d = parseLocalDate(dateStr)
   return `${d.getMonth() + 1}月${d.getDate()}日 周${weekDays[d.getDay()]}`
 }
 
@@ -123,6 +132,6 @@ export function formatDateLabel(dateStr) {
  * Format a date string as "M月D日".
  */
 export function formatShortDate(dateStr) {
-  const d = new Date(dateStr)
+  const d = parseLocalDate(dateStr)
   return `${d.getMonth() + 1}月${d.getDate()}日`
 }

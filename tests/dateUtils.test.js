@@ -54,6 +54,13 @@ describe('getCurrentPeriodRange', () => {
     expect(result.start).toBe('2025-12-10')
     expect(result.end).toBe('2026-01-24')
   })
+
+  it('handles December boundary when today >= startDay (end falls in January next year)', () => {
+    // today = 2026-12-28, startDay=25 → period: 2026-12-25 → 2027-01-24
+    const result = getCurrentPeriodRange(25, 24, new Date(2026, 11, 28))
+    expect(result.start).toBe('2026-12-25')
+    expect(result.end).toBe('2027-01-24')
+  })
 })
 
 describe('calcPeriodProgress', () => {
@@ -63,6 +70,16 @@ describe('calcPeriodProgress', () => {
 
   it('returns 100 when today is after period', () => {
     expect(calcPeriodProgress('2020-01-01', '2020-01-31')).toBe(100)
+  })
+
+  it('returns a percentage between 0 and 100 for dates within the period', () => {
+    // Period: 2026-03-25 to 2026-04-24 (31 days)
+    // now = 2026-03-25 start of day = s, so 0%? No — pass an explicit now
+    const s = new Date(2026, 2, 25).getTime()  // 2026-03-25 local
+    const e = new Date(2026, 3, 24).getTime() + 86400000  // 2026-04-24 end of day
+    const mid = Math.round(s + (e - s) / 2)   // exactly halfway
+    const pct = calcPeriodProgress('2026-03-25', '2026-04-24', mid)
+    expect(pct).toBe(50)
   })
 })
 
