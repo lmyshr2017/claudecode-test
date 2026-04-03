@@ -97,15 +97,16 @@
             <div v-else-if="period.records.length === 0" class="detail-empty">
               该周期暂无记录
             </div>
-            <div
-              v-else
-              v-for="rec in period.records"
-              :key="rec.date"
-              class="detail-row"
-            >
-              <span class="detail-date">{{ formatShortDate(rec.date) }}</span>
-              <span class="detail-ot">{{ rec.ot_hours }}h</span>
-            </div>
+            <template v-else>
+              <div
+                v-for="rec in period.records"
+                :key="rec.date"
+                class="detail-row"
+              >
+                <span class="detail-date">{{ formatShortDate(rec.date) }}</span>
+                <span class="detail-ot">{{ rec.ot_hours }}h</span>
+              </div>
+            </template>
           </div>
 
           <div class="history-sep" />
@@ -191,14 +192,15 @@ onMounted(async () => {
     await recordsStore.fetchByRange(start, end)
 
     // Load previous 3 months so history OT totals show immediately
-    const wideStart = new Date(start)
+    const [sy, sm, sd] = start.split('-').map(Number)
+    const wideStart = new Date(sy, sm - 1, sd)
     wideStart.setMonth(wideStart.getMonth() - 3)
     await recordsStore.fetchByRange(formatDate(wideStart), end)
+
+    buildHistoryPeriods()
   } catch {
     showToast({ message: '加载数据失败，请检查网络', type: 'fail' })
   }
-
-  buildHistoryPeriods()
 })
 </script>
 
