@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Read(//c/Users/myli52/AppData/Local/Temp/claude/D--code-my-hn-web/02dbad80-4684-40b9-96a4-7f1db29f2d2e/tasks/**)",
+      "Bash(npm install:*)",
+      "Bash(npm --version)",
+      "Bash(tee /tmp/npm-install-log.txt)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(npm config:*)",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(git -C /d/code-my/hn-web status)",
+      "Bash(git -C /d/code-my/hn-web add package.json vite.config.js vercel.json index.html .env.example .gitignore src/main.js src/App.vue package-lock.json)",
+      "Bash(git -C:*)",
+      "Read(//d D:/code-my/**)",
+      "Bash(npm test:*)",
+      "Bash(echo \"EXIT_CODE=$?\")",
+      "Bash(node -e \"import\\(''''./vite.config.js''''\\)\")",
+      "Bash(npx vitest:*)",
+      "Bash(NVM_DIR=\"$HOME/.nvm\")",
+      "Bash(. \"$NVM_DIR/nvm.sh\")",
+      "Bash(nvm use:*)",
+      "Read(//d/dev/nodejs//**)",
+      "Read(//c/Users/myli52/**)",
+      "Bash(find /d -name nvm.sh)"
+    ]
+  }
+}
