@@ -15,7 +15,7 @@
         <line
           :x1="0" :y1="SVG_H - BOTTOM_PAD"
           :x2="SVG_W" :y2="SVG_H - BOTTOM_PAD"
-          stroke="#F0EDE8" stroke-width="1"
+          stroke="rgba(15, 23, 42, 0.1)" stroke-width="1"
         />
         <!-- Bars -->
         <rect
@@ -25,7 +25,7 @@
           :y="SVG_H - BOTTOM_PAD - bar.h"
           :width="barW"
           :height="bar.h || 2"
-          :fill="bar.ot_hours > 0 ? '#D97706' : '#E8E5DF'"
+          :fill="bar.ot_hours > 0 ? '#2563EB' : 'rgba(37, 99, 235, 0.1)'"
           rx="2"
         />
       </svg>
@@ -117,14 +117,14 @@ const xLabels = computed(() => {
 
 .chart-title {
   font-size: 0.875rem;
-  color: #78716C;
-  font-weight: 500;
+  color: var(--theme-text-sub);
+  font-weight: 600;
   margin-bottom: 14px;
 }
 
 .chart-empty {
   text-align: center;
-  color: #D4D0C8;
+  color: var(--theme-text-sub);
   font-size: 0.875rem;
   padding: 28px 0;
 }
@@ -141,7 +141,7 @@ const xLabels = computed(() => {
   display: flex;
   justify-content: space-between;
   font-size: 0.6875rem;
-  color: #78716C;
+  color: var(--theme-text-sub);
   margin-top: 4px;
 }
 

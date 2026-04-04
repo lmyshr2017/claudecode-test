@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page">
+  <div class="login-page animate-fade-in">
     <!-- Hero header -->
     <div class="login-header">
       <div class="login-logo">⏱</div>
@@ -8,8 +8,8 @@
     </div>
 
     <!-- Tab form -->
-    <div class="login-body">
-      <van-tabs v-model:active="activeTab" animated>
+    <div class="login-body glass-card">
+      <van-tabs v-model:active="activeTab" animated class="transparent-tabs">
         <!-- Login Tab -->
         <van-tab title="登录">
           <van-form @submit="handleLogin" class="tab-form">
@@ -152,40 +152,76 @@ async function handleRegister() {
 <style scoped>
 .login-page {
   min-height: 100vh;
-  background: #F8F7F4;
+  background: var(--theme-bg);
   display: flex;
   flex-direction: column;
 }
 
 .login-header {
-  background: #18181B;
-  padding: 72px 24px 52px;
+  background: radial-gradient(circle at 10% 20%, #3B82F6, #1E3A8A 80%);
+  padding: 80px 24px 80px;
   text-align: center;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  box-shadow: 0 10px 40px rgba(37, 99, 235, 0.4);
+  margin-bottom: -40px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.login-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+  opacity: 0.9;
+  mix-blend-mode: overlay;
+  pointer-events: none;
 }
 
 .login-logo {
-  font-size: 3rem;
+  font-size: 3.5rem;
   margin-bottom: 16px;
-  display: block;
+  display: inline-block;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
 }
 
 .login-title {
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   font-weight: 800;
   color: #fff;
   margin: 0 0 8px;
   letter-spacing: -0.5px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .login-subtitle {
-  font-size: 0.875rem;
-  color: rgba(255,255,255,0.4);
+  font-size: 0.9375rem;
+  color: rgba(255,255,255,0.8);
   margin: 0;
 }
 
 .login-body {
   flex: 1;
-  padding-top: 8px;
+  margin: 0 20px 40px;
+  position: relative;
+  z-index: 2;
+  padding: 24px 0 16px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 1), 0 12px 36px rgba(37, 99, 235, 0.08);
+  border-radius: 32px;
 }
 
 .tab-form {
@@ -193,14 +229,41 @@ async function handleRegister() {
 }
 
 .form-action {
-  padding: 24px 16px 16px;
+  padding: 32px 24px 24px;
+}
+
+:deep(.van-tabs__nav) {
+  background: transparent;
 }
 
 :deep(.van-tabs__line) {
-  background: #D97706 !important;
+  background: #2563EB !important;
 }
 :deep(.van-tab--active .van-tab__text) {
-  color: #D97706;
+  color: #2563EB;
   font-weight: 700;
+}
+
+:deep(.van-cell-group--inset) {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  padding: 4px 0;
+  margin: 0 24px;
+}
+
+:deep(.van-cell) {
+  background: transparent;
+  padding: 16px 20px;
+}
+
+:deep(.van-field__label) {
+  color: #1E293B;
+  font-weight: 600;
+}
+:deep(.van-field__control) {
+  font-weight: 500;
+  color: #0F172A;
 }
 </style>

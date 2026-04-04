@@ -1,6 +1,6 @@
 <template>
-  <div class="page">
-    <van-nav-bar title="设置" />
+  <div class="page animate-fade-in">
+    <van-nav-bar title="设置" class="glass-nav-bar" fixed placeholder />
 
     <!-- Account -->
     <div class="section-label">账号</div>
@@ -107,7 +107,7 @@
 
     <!-- Logout -->
     <div class="logout-wrap">
-      <van-button round block plain type="danger" @click="handleLogout">
+      <van-button round block type="default" class="danger-glass-btn" @click="handleLogout">
         退出登录
       </van-button>
     </div>
@@ -277,45 +277,56 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+::v-deep(.glass-nav-bar) {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(24px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+}
+::v-deep(.glass-nav-bar .van-nav-bar__title) {
+  font-weight: 800;
+  color: #0F172A;
+}
+
 .section-label {
   font-size: 0.75rem;
-  color: #78716C;
-  font-weight: 600;
+  color: var(--theme-text-sub);
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 20px 20px 8px;
+  padding: 24px 20px 8px;
 }
 
 .account-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
 .account-avatar {
-  width: 44px;
-  height: 44px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background: #18181B;
+  background: linear-gradient(135deg, #3B82F6, #1E3A8A);
   color: white;
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
-.account-name  { font-size: 1rem; font-weight: 700; color: #1C1917; cursor: pointer; display: flex; align-items: center; }
-.account-email { font-size: 0.8125rem; color: #78716C; margin-top: 2px; }
+.account-name  { font-size: 1.0625rem; font-weight: 700; color: var(--theme-text-main); cursor: pointer; display: flex; align-items: center; }
+.account-email { font-size: 0.8125rem; color: var(--theme-text-sub); margin-top: 4px; }
 
 .nickname-edit-row { display: flex; align-items: center; }
 .nickname-input {
-  font-size: 1rem;
+  font-size: 1.0625rem;
   font-weight: 700;
-  color: #1C1917;
+  color: var(--theme-text-main);
   border: none;
-  border-bottom: 1.5px solid #D97706;
+  border-bottom: 2px solid #2563EB;
   background: transparent;
   outline: none;
   padding: 2px 0;
@@ -329,14 +340,14 @@ onMounted(async () => {
   min-height: 48px;
 }
 
-.config-label { font-size: 0.9375rem; color: #1C1917; font-weight: 500; }
+.config-label { font-size: 0.9375rem; color: var(--theme-text-main); font-weight: 600; }
 .config-right { display: flex; align-items: center; gap: 8px; }
-.config-unit  { font-size: 0.875rem; color: #78716C; }
+.config-unit  { font-size: 0.875rem; color: var(--theme-text-sub); }
 
 .divider {
   height: 1px;
-  background: #F0EDE8;
-  margin: 4px 0;
+  background: rgba(15, 23, 42, 0.05);
+  margin: 8px 0;
 }
 
 .period-inputs {
@@ -351,32 +362,42 @@ onMounted(async () => {
   gap: 4px;
 }
 
-.period-field-label { font-size: 0.8125rem; color: #78716C; }
+.period-field-label { font-size: 0.8125rem; color: var(--theme-text-sub); }
 
 .day-input {
   width: 44px;
   text-align: center;
-  border: 1px solid #F0EDE8;
+  border: 1px solid rgba(15, 23, 42, 0.1);
   border-radius: 8px;
   padding: 6px 4px;
   font-size: 1rem;
-  color: #1C1917;
-  background: #F8F7F4;
+  font-weight: 600;
+  color: var(--theme-text-main);
+  background: rgba(255, 255, 255, 0.5);
   outline: none;
   -moz-appearance: textfield;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.day-input:focus {
+  border-color: #2563EB;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
 }
 .day-input::-webkit-inner-spin-button,
 .day-input::-webkit-outer-spin-button { -webkit-appearance: none; }
 
-.period-sep { font-size: 0.875rem; color: #78716C; }
+.period-sep { font-size: 0.875rem; color: var(--theme-text-sub); }
 
 .period-preview {
   display: flex;
   align-items: center;
-  gap: 4px;
-  margin-top: 12px;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 10px 12px;
+  background: rgba(37, 99, 235, 0.05);
+  border-radius: 8px;
   font-size: 0.8125rem;
-  color: #78716C;
+  color: #2563EB;
+  font-weight: 500;
 }
 
 .data-row {
@@ -385,10 +406,30 @@ onMounted(async () => {
   justify-content: space-between;
   min-height: 48px;
   cursor: pointer;
+  transition: opacity 0.2s;
 }
-.data-label { font-size: 0.9375rem; color: #1C1917; font-weight: 500; }
+.data-row:active {
+  opacity: 0.6;
+}
+.data-label { font-size: 0.9375rem; color: var(--theme-text-main); font-weight: 600; }
 .data-right { display: flex; align-items: center; gap: 6px; }
-.data-hint  { font-size: 0.8125rem; color: #78716C; }
+.data-hint  { font-size: 0.8125rem; color: var(--theme-text-sub); }
 
-.logout-wrap { padding: 8px 16px 32px; }
+.logout-wrap { padding: 16px 16px 32px; }
+
+::v-deep(.danger-glass-btn) {
+  background: rgba(220, 38, 38, 0.1) !important;
+  border: 1px solid rgba(220, 38, 38, 0.2) !important;
+  color: #DC2626 !important;
+  font-weight: 700 !important;
+  font-size: 1.0625rem !important;
+  height: 52px !important;
+  border-radius: 26px !important;
+  box-shadow: none !important;
+  transition: all 0.2s;
+}
+::v-deep(.danger-glass-btn:active) {
+  background: rgba(220, 38, 38, 0.2) !important;
+  transform: scale(0.96) !important;
+}
 </style>

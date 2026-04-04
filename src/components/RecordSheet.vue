@@ -4,6 +4,8 @@
     position="bottom"
     round
     safe-area-inset-bottom
+    teleport="body"
+    class="glass-popup"
     :style="{ maxHeight: '90vh' }"
   >
     <div class="sheet">
@@ -18,42 +20,44 @@
 
       <!-- Body -->
       <div class="sheet-body">
-        <!-- Start time -->
-        <div class="field-row" @click="openPicker('start')">
-          <span class="field-label">上班时间</span>
-          <span class="field-val" :class="{ empty: !form.start_time }">
-            {{ form.start_time || '未填写' }}
-          </span>
-        </div>
+        <div class="glass-group">
+          <!-- Start time -->
+          <div class="field-row" @click="openPicker('start')">
+            <span class="field-label">上班时间</span>
+            <span class="field-val" :class="{ empty: !form.start_time }">
+              {{ form.start_time || '未填写' }}
+            </span>
+          </div>
 
-        <!-- End time -->
-        <div class="field-row" @click="openPicker('end')">
-          <span class="field-label">下班时间</span>
-          <span class="field-val" :class="{ empty: !form.end_time }">
-            {{ form.end_time || '未填写' }}
-          </span>
-        </div>
+          <!-- End time -->
+          <div class="field-row" @click="openPicker('end')">
+            <span class="field-label">下班时间</span>
+            <span class="field-val" :class="{ empty: !form.end_time }">
+              {{ form.end_time || '未填写' }}
+            </span>
+          </div>
 
-        <!-- OT hours -->
-        <div class="field-row">
-          <span class="field-label">加班时长</span>
-          <div class="stepper-wrap">
-            <van-stepper
-              v-model="form.ot_hours"
-              :step="0.5"
-              :min="0"
-              :max="24"
-              :decimal-length="1"
-            />
-            <span class="unit">h</span>
+          <!-- OT hours -->
+          <div class="field-row border-none">
+            <span class="field-label">加班时长</span>
+            <div class="stepper-wrap">
+              <van-stepper
+                v-model="form.ot_hours"
+                :step="0.5"
+                :min="0"
+                :max="24"
+                :decimal-length="1"
+                button-size="28"
+              />
+              <span class="unit">h</span>
+            </div>
           </div>
         </div>
 
         <!-- Note -->
-        <div class="note-wrap">
+        <div class="note-wrap glass-group">
           <van-field
             v-model="form.note"
-            label="备注"
             placeholder="加班原因、项目名等（选填）"
             type="textarea"
             :maxlength="100"
@@ -61,6 +65,7 @@
             :border="false"
             rows="2"
             autosize
+            class="glass-field"
           />
         </div>
       </div>
@@ -82,6 +87,7 @@
       v-model:show="pickerVisible"
       position="bottom"
       safe-area-inset-bottom
+      teleport="body"
     >
       <van-time-picker
         v-model="pickerValue"
@@ -221,66 +227,104 @@ async function handleDelete() {
 </script>
 
 <style scoped>
+:deep(.glass-popup) {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(34px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(34px) saturate(200%) !important;
+  border-top-left-radius: 36px !important;
+  border-top-right-radius: 36px !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 1) !important;
+}
+
 .sheet { padding-bottom: 8px; }
 
 .sheet-handle {
-  width: 36px;
-  height: 4px;
-  background: #E8E5DF;
-  border-radius: 2px;
+  width: 44px;
+  height: 5px;
+  background: rgba(15, 23, 42, 0.1);
+  border-radius: 3px;
   margin: 12px auto;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
 }
 
 .sheet-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px 12px;
+  padding: 8px 24px 16px;
 }
 
 .sheet-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #1C1917;
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -0.3px;
 }
 
 .del-btn {
-  background: none;
-  border: none;
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.2);
   color: #DC2626;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 6px 14px;
+  border-radius: 12px;
+  transition: all 0.2s;
 }
+.del-btn:active { background: rgba(220, 38, 38, 0.2); transform: scale(0.95); }
 
 .sheet-body { padding: 0 20px; }
+
+.glass-group {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  padding: 0 20px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
 
 .field-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 0;
-  border-bottom: 1px solid #F0EDE8;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.04);
   cursor: pointer;
+  transition: opacity 0.2s;
 }
+.field-row:active { opacity: 0.6; }
+.field-row.border-none { border-bottom: none; }
 
 .field-label {
   font-size: 0.9375rem;
-  color: #1C1917;
-  font-weight: 500;
+  color: #1E293B;
+  font-weight: 600;
 }
 
-.field-val       { font-size: 0.9375rem; color: #1C1917; }
-.field-val.empty { color: #D4D0C8; }
+.field-val       { font-size: 0.9375rem; color: #0F172A; font-weight: 500; }
+.field-val.empty { color: #94A3B8; font-weight: 400; }
 
 .stepper-wrap {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.unit { font-size: 0.875rem; color: #78716C; }
+.unit { font-size: 0.875rem; color: #64748B; font-weight: 500; }
 
-.note-wrap { margin-top: 8px; }
+.note-wrap {
+  padding: 12px 0;
+}
+:deep(.glass-field) {
+  background: transparent !important;
+  padding: 0 !important;
+}
+:deep(.van-field__control) {
+  font-size: 0.9375rem !important;
+  color: #0F172A !important;
+}
 
-.sheet-foot { padding: 20px 20px 12px; }
+.sheet-foot { padding: 8px 20px 24px; }
 </style>

@@ -42,7 +42,7 @@ defineProps({
 }
 .stat-unit {
   font-size: 0.75rem;
-  color: #D97706;
+  color: #93C5FD;
   font-weight: 600;
 }
 .stat-sub {

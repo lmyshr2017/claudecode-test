@@ -27,15 +27,12 @@
           'cell-disabled': !cell.inPeriod,
           'cell-today':     cell.dateStr === todayStr && cell.inPeriod,
           'cell-active':    cell.inPeriod && cell.inCurrentMonth,
+          'cell-ot':        records[cell.dateStr] && Number(records[cell.dateStr].ot_hours) > 0,
+          'cell-recorded':  records[cell.dateStr] && Number(records[cell.dateStr].ot_hours) === 0
         }"
         @click="onCellClick(cell)"
       >
         <span class="cell-num">{{ cell.date.getDate() }}</span>
-        <span
-          v-if="records[cell.dateStr]"
-          class="cell-dot"
-          :class="Number(records[cell.dateStr].ot_hours) > 0 ? 'dot-ot' : 'dot-normal'"
-        />
       </div>
     </div>
   </div>
@@ -82,51 +79,57 @@ function onCellClick(cell) {
 </script>
 
 <style scoped>
-.calendar { padding: 0 16px 8px; }
+.calendar { padding: 0 4px 8px; }
 
 .cal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 0 12px;
+  padding: 8px 12px 20px;
 }
 
 .month-label {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #1C1917;
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--theme-text-main);
+  letter-spacing: -0.3px;
 }
 
 .nav-btn {
-  width: 36px;
-  height: 36px;
-  border: none;
-  background: none;
-  color: #78716C;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  background: rgba(15, 23, 42, 0.02);
+  color: var(--theme-text-main);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.nav-btn:active { background: #F0EDE8; }
+.nav-btn:active { 
+  background: rgba(15, 23, 42, 0.06); 
+  transform: scale(0.9);
+}
 
 .weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
-  font-size: 0.75rem;
-  color: #78716C;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #F0EDE8;
-  margin-bottom: 4px;
+  font-size: 0.8125rem;
+  color: #94A3B8;
+  font-weight: 600;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.04);
+  margin-bottom: 12px;
 }
 
 .cal-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
+  gap: 6px;
+  padding: 0 4px;
 }
 
 .cal-cell {
@@ -135,44 +138,66 @@ function onCellClick(cell) {
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
-  border-radius: 10px;
+  border-radius: 12px;
   position: relative;
   cursor: default;
   user-select: none;
+  background: transparent;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
 }
 
-.cell-active {
-  cursor: pointer;
+.cal-cell::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.6);
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
 }
-.cell-active:active { background: #F5F1EB; }
+
+.cell-active { cursor: pointer; }
+.cell-active:active { transform: scale(0.85); opacity: 0.8; }
 
 .cell-num {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #1C1917;
+  position: relative;
+  z-index: 1;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--theme-text-main);
   line-height: 1;
 }
 
-.cell-other   .cell-num  { color: #D4D0C8; }
-.cell-disabled .cell-num { color: #D4D0C8; }
+.cell-other   .cell-num  { color: #CBD5E1; }
+.cell-disabled .cell-num { color: #CBD5E1; }
 
+/* ── Overtime Background Styling ── */
+.cell-ot {
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+}
+.cell-ot::before { opacity: 1; }
+.cell-ot .cell-num {
+  color: #2563EB;
+  font-weight: 800;
+}
+
+.cell-recorded {
+  border: 1px dashed rgba(15, 23, 42, 0.15);
+  background: rgba(248, 250, 252, 0.5);
+}
+
+/* ── Today Badge Styling ── */
+.cell-today {
+  background: linear-gradient(135deg, #60A5FA, #2563EB) !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+}
+.cell-today::before { opacity: 1; }
 .cell-today .cell-num {
-  width: 28px;
-  height: 28px;
-  background: #18181B;
-  color: #fff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: #FFF !important;
+  font-weight: 800;
 }
-
-.cell-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  margin-top: 3px;
-}
-.dot-ot     { background: #16A34A; }
-.dot-normal { background: #D4D0C8; }
 </style>
