@@ -25,6 +25,6 @@ export async function upsertSettings(patch) {
 
   const { error } = await supabase
     .from('settings')
-    .upsert({ user_id: userId, ...patch, updated_at: new Date().toISOString() })
+    .upsert({ user_id: userId, ...patch, updated_at: new Date().toISOString() }, { onConflict: 'user_id' })
   if (error) throw error
 }
