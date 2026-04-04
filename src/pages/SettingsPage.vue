@@ -8,7 +8,21 @@
       <div class="account-row">
         <div class="account-avatar">{{ avatarLetter }}</div>
         <div class="account-info">
-          <div class="account-name">{{ authStore.profile?.nickname || '未设置昵称' }}</div>
+          <div v-if="!editingNickname" class="account-name" @click="startEditNickname">
+            {{ authStore.profile?.nickname || '未设置昵称' }}
+            <van-icon name="edit" size="13" color="#78716C" style="margin-left:4px" />
+          </div>
+          <div v-else class="nickname-edit-row">
+            <input
+              ref="nicknameInput"
+              v-model="nicknameForm"
+              class="nickname-input"
+              placeholder="输入昵称"
+              maxlength="20"
+              @keyup.enter="saveNickname"
+              @blur="saveNickname"
+            />
+          </div>
           <div class="account-email">{{ authStore.user?.email }}</div>
         </div>
       </div>
@@ -101,7 +115,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { useRouter }           from 'vue-router'
 import { showToast, showConfirmDialog } from 'vant'
 import { useAuthStore }                from '@/stores/auth'
@@ -119,6 +133,35 @@ const form = reactive({
   periodStartDay: settingsStore.periodStartDay,
   periodEndDay:   settingsStore.periodEndDay,
 })
+
+// ── Nickname editing ──────────────────────────────────────────────────────
+const editingNickname = ref(false)
+const nicknameForm    = ref('')
+const nicknameInput   = ref(null)
+
+async function startEditNickname() {
+  nicknameForm.value    = authStore.profile?.nickname || ''
+  editingNickname.value = true
+  await nextTick()
+  nicknameInput.value?.focus()
+}
+
+async function saveNickname() {
+  if (!editingNickname.value) return
+  editingNickname.value = false
+  const name = nicknameForm.value.trim()
+  if (!name || name === authStore.profile?.nickname) return
+  try {
+    const userId = authStore.user?.id
+    const { supabase } = await import('@/utils/supabase')
+    await supabase.from('profiles').upsert({ id: userId, nickname: name }, { onConflict: 'id' })
+    if (!authStore.profile) authStore.profile = {}
+    authStore.profile.nickname = name
+    showToast({ message: '昵称已保存', type: 'success', duration: 1200 })
+  } catch {
+    showToast({ message: '保存失败', type: 'fail' })
+  }
+}
 
 const avatarLetter = computed(() => {
   const name = authStore.profile?.nickname || authStore.user?.email || '?'
@@ -263,8 +306,21 @@ onMounted(async () => {
   flex-shrink: 0;
 }
 
-.account-name  { font-size: 1rem; font-weight: 700; color: #1C1917; }
+.account-name  { font-size: 1rem; font-weight: 700; color: #1C1917; cursor: pointer; display: flex; align-items: center; }
 .account-email { font-size: 0.8125rem; color: #78716C; margin-top: 2px; }
+
+.nickname-edit-row { display: flex; align-items: center; }
+.nickname-input {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1C1917;
+  border: none;
+  border-bottom: 1.5px solid #D97706;
+  background: transparent;
+  outline: none;
+  padding: 2px 0;
+  width: 140px;
+}
 
 .config-row {
   display: flex;
